@@ -1,3 +1,4 @@
-# add the following to _config.yml file
 title: Idlir Shkurti
+description: Senior Data Scientist
+show_downloads: true
 theme: jeykll-theme-minimal
