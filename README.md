@@ -39,12 +39,9 @@
 **Institution**: [University of Oxford](http://www.ox.ac.uk)  
 **Location**: Oxford, UK  
 **Duration**: Oct 2015 -- Nov 2016  
-- Dissertation: [Dirichlet Process Mixture Modelling Of False Discovery Rates](https://github.com/idlirshkurti/DPMM)
-- Awards: [Excellence Fund Scholarship](http://www.arsimi.gov.al/fondi-i-ekselences/)
 
 ### Bachelor of Science with Honours in Mathematics and Statistics
 **Institution**: [Queen Mary, University of London](http://www.qmul.ac.uk)  
 **Location**: London, UK  
 **Duration**: Sep 2012 -- Jul 2015  
-- Awards: [International Science and Engineering Excellence Award](https://www.qmul.ac.uk/scholarships/items/queen-mary-global-excellence-scholarships-ug.html)
 
