@@ -1,3 +1,9 @@
+---
+title: Async Mocking
+has_children: true
+nav_order: 2
+---
+
 # Mocking Asynchronous Functions in Python
 
 When testing Python’s `asyncio`-based functions, standard testing methods fall short due to async functions returning coroutine objects. This guide covers techniques to mock such functions, enabling efficient testing.
