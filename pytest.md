@@ -9,4 +9,12 @@ tags: [python, pytest, mocking, async]
 
 # Pytest best practices
 
-This is a series of posts that cover testing in python using Pytest.
+{:.no_toc}
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---

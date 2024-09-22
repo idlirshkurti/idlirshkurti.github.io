@@ -8,6 +8,16 @@ tags: [python, pytest, MongoDB, mocking, async]
 ---
 
 # Mocking MongoDB in `Pytest` with Asynchronous Querying
+{:.no_toc}
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 
 Testing database-related code can be tricky, especially when working with asynchronous operations like those in MongoDB. However, mocking a MongoDB database during tests can help you focus on your logic without depending on the actual database.
 

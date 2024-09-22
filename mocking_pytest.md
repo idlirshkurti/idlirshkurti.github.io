@@ -8,6 +8,15 @@ tags: [python, pytest, mocking, async]
 ---
 
 # Comprehensive Guide to Mocking in Pytest
+{:.no_toc}
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 
 Mocking is a crucial technique in software testing that allows you to replace real objects or functions with controlled ones. This technique is especially useful when you're testing isolated parts of your code and don't want external dependencies to interfere. In Python, pytest offers a flexible and powerful platform for testing, and mocking is one of the most commonly used features.
