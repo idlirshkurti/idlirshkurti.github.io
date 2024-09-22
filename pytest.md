@@ -9,12 +9,4 @@ tags: [python, pytest, mocking, async]
 
 # Pytest best practices
 
-{:.no_toc}
-
-## Table of contents
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}
-
----
+Notes and guidelines on using pytest in python for unit testing.

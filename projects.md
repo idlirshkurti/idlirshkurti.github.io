@@ -1,6 +1,6 @@
 ---
 layout: page
-title: projects
+title: Projects
 has_children: true
 nav_order: 2
 description: Data science projects
