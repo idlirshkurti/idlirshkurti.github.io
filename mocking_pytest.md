@@ -2,6 +2,8 @@
 layout: page
 title: Pytest mocking
 parent: Pytest
+nav_order: 1
+tags: [python, pytest, mocking, async]
 ---
 
 # Comprehensive Guide to Mocking in Pytest
