@@ -1,4 +1,5 @@
 ---
+layout: page
 title: Async Mocking
 has_children: true
 nav_order: 2

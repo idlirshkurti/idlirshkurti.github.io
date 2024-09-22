@@ -1,4 +1,5 @@
 ---
+layout: page
 title: Pytest mocking
 parent: Pytest
 has_children: true
