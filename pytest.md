@@ -1,7 +1,6 @@
 ---
 layout: page
 title: Pytest
-has_children: true
 ---
 
 # Pytest best practices
