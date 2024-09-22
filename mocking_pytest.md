@@ -2,6 +2,7 @@
 layout: page
 title: Pytest mocking
 parent: Pytest
+description: Using pytest to mock async functions in python
 nav_order: 1
 tags: [python, pytest, mocking, async]
 ---

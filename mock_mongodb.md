@@ -2,6 +2,9 @@
 layout: page
 title: Database mocking
 parent: Pytest
+description: Using pytest to mock async functions in python
+nav_order: 1
+tags: [python, pytest, MongoDB, mocking, async]
 ---
 
 # Mocking MongoDB in `Pytest` with Asynchronous Querying
