@@ -1,7 +1,7 @@
 ---
+layout: page
 title: Pytest
 has_children: true
-nav_order: 2
 ---
 
 # Pytest best practices

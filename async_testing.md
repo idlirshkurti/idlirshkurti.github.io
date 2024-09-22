@@ -2,6 +2,7 @@
 layout: page
 title: Async Mocking
 description: Using pytest to mock async functions in python
+parent: Pytest
 ---
 
 # Mocking Asynchronous Functions in Python
