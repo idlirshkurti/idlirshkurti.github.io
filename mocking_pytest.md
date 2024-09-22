@@ -2,8 +2,6 @@
 layout: page
 title: Pytest mocking
 parent: Pytest
-has_children: true
-nav_order: 1
 ---
 
 # Comprehensive Guide to Mocking in Pytest
