@@ -1,13 +1,13 @@
 ---
 layout: page
-title: Actor based model - Pykka
+title: Pykka
 parent: Actors
-description: Using Pykka to build an actor based model
+description: Using Pykka to build an Actor-Based Model in python
 nav_order: 1
-tags: tags: [python, pykka, actors, async]
+tags: [python, pykka, actors, async]
 ---
 
-# Actor based model - Pykka
+# Actor-Based Model - Pykka
 {:.no_toc}
 
 ## Table of contents
