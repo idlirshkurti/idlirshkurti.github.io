@@ -252,7 +252,7 @@ Here is what the player entry for Salah might look like in the `elements` array:
     "second_name": "Salah",
     "squad_number": 11,
     "news": "",
-    "now_cost": 127,  # Cost in tenths (12.7m)
+    "now_cost": 127,
     "chance_of_playing_this_round": 100,
     "total_points": 100,
     "minutes": 900,
