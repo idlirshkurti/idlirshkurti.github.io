@@ -14,6 +14,6 @@ Here, you'll find:
 * **Personal projects** that showcase my creative applications of data science.
 * **Random musings** on anything that sparks my interest, from the latest AI advancements to Fantasy Football.
 
-[Github](https://github.com/idlirshkurti){: .btn .fs-5 .mb-4 .mb-md-0 } [Linkedin](https://www.linkedin.com/in/idlir-shkurti/){: .btn .fs-5 .mb-4 .mb-md-0 } 
+[Github](https://github.com/idlirshkurti){: .btn .fs-5 .mb-4 .mb-md-0 }                              [Linkedin](https://www.linkedin.com/in/idlir-shkurti/){: .btn .fs-5 .mb-4 .mb-md-0 } 
 
 My blog should not be taken to reflect the views of any organization I'm affiliated with.

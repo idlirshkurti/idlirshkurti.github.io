@@ -1,9 +1,10 @@
 ---
-layout: page  
-title: Setting Up a Blog on GitHub Pages  
-date: 2024-09-22 15:05 +0100  
-categories: [Blogging, Tutorial]  
-tags: [github-pages, blog, personal blog, jekyll]  
+layout: page
+title: Setting Up a Blog on GitHub Pages
+parent: Tutorials
+date: 2024-09-22 15:05 +0100
+categories: [Blogging, Tutorial]
+tags: [github-pages, blog, personal blog, jekyll]
 ---
 
 ## Starting My Blog

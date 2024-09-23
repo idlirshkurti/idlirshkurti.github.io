@@ -1,6 +1,6 @@
 ---
 layout: page  
-title: A Simple Guide to FastAPI in Python  
+title: FastAPI
 date: 2024-09-22 15:05 +0100  
 categories: [FastAPI, Tutorial]  
 tags: [python, blog, fastapi pydantic]  
