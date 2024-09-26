@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Pytest
-parent: Tutorials
+parent: the-dev-hub
 has_children: true
 nav_order: 2
 description: Pytest best practices in python

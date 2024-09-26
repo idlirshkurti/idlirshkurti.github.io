@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Actors
-parent: Tutorials
+parent: the-dev-hub
 has_children: true
 nav_order: 2
 description: Building an Actors-Based Model in python

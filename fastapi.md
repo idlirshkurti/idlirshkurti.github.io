@@ -1,7 +1,7 @@
 ---
 layout: page  
 title: FastAPI
-parent: Tutorials
+parent: the-dev-hub
 date: 2024-09-22 15:05 +0100  
 categories: [FastAPI, Tutorial]  
 tags: [python, blog, fastapi pydantic]  

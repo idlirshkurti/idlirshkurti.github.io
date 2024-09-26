@@ -1,7 +1,7 @@
 ---
 layout: page
 title: FPL
-parent: Tutorials
+parent: Projects
 has_children: true
 nav_order: 2
 description: Fantasy Premier League related posts 
