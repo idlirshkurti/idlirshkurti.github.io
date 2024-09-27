@@ -236,7 +236,8 @@ plt.ylabel("Density")
 plt.show()
 ```
 
-![[./plots/output.png]]
+![Synthetic dataset](./plots/output.png)
+
 ### Neal’s Algorithm 8
 
 Neal's Algorithm 8 introduces auxiliary variables to facilitate more efficient mixing of clusters. This algorithm generates faster convergence than the No-Gaps algorithm.
@@ -383,12 +384,11 @@ np.random.seed(42)
 data = np.concatenate([beta.rvs(0.1, 2, size=50), uniform.rvs(size=50)])
 ```
 
-![[./plots/clusters_pvalues.png]]
-
+![clusters_1](./plots/clusters_pvalues.png)
 
 With each cluster coming from a beta distribution as follows:
 
-![[./plots/beta_clusters.png]]
+![clusters_2](./plots/beta_clusters.png)
 
 
 ### 1. Accuracy of Clustering and Estimation of \( \pi_1 \)
