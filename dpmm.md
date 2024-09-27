@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: default
 title: DPMM
 parent: Projects
 nav_order: 2
