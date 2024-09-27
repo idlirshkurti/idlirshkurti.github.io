@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: about
 title: Pytest
 parent: the-dev-hub
 has_children: true
