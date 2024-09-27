@@ -1,10 +1,11 @@
 ---
-layout: post
+layout: page
 title: DPMM
 parent: Projects
 nav_order: 2
 description: Dirichlet Process Mixture Modelling of False Discovery Rates
 tags: [dpmm, dirichlet, clusterting, python, statistics, math]
+math: mathjax3
 ---
 
 # Dirichlet Process Mixture Modelling of False Discovery Rates
@@ -22,15 +23,15 @@ tags: [dpmm, dirichlet, clusterting, python, statistics, math]
 
 In hypothesis testing, **False Discovery Rate (FDR)** refers to the proportion of false positives among all the hypotheses rejected. This concept becomes critical when we conduct multiple hypothesis tests, where controlling the probability of making a Type I error (a false positive) across all tests is necessary. The classical FDR formula can be expressed as:
 
-\[
+$$
 FDR = \mathbb{E} \left( \frac{V}{R} \Big| R > 0 \right) \times P(R > 0)
-\]
+$$
 
 Where:
-- \( V \) is the number of false rejections (false positives),
-- \( R \) is the total number of rejections (true positives + false positives).
+- \\( V \\) is the number of false rejections (false positives),
+- \\( R \\) is the total number of rejections (true positives + false positives).
 
-The **Positive False Discovery Rate (pFDR)**, proposed by Storey, modifies the FDR formula to remove the dependence on \( P(R > 0) \), leading to a more refined and practically useful measure.
+The **Positive False Discovery Rate (pFDR)**, proposed by Storey, modifies the FDR formula to remove the dependence on \\( P(R > 0) \\), leading to a more refined and practically useful measure.
 
 Traditionally, methods like the Benjamini-Hochberg procedure provide a frequentist approach to controlling the FDR, but these methods assume a specific structure in the underlying distribution of p-values. **Bayesian nonparametric approaches**, such as Dirichlet Process Mixture Models (DPMMs), offer a more flexible and powerful solution, especially when data are complex and the true distribution of p-values is unknown.
 
@@ -40,37 +41,37 @@ A **Dirichlet Process Mixture Model (DPMM)** is a type of Bayesian nonparametric
 
 ### How DPMMs Work
 
-The Dirichlet process \(DP(\alpha, H)\) is a stochastic process where \( H \) is the base distribution (the prior) and \( \alpha \) is the concentration parameter controlling how many clusters we expect in the data. A Dirichlet process generates a discrete distribution, which can be used to model the clustering of p-values into groups that share common statistical properties (such as their distribution under the null or alternative hypothesis).
+The Dirichlet process \\(DP(\alpha, H)\\) is a stochastic process where \\( H \\) is the base distribution (the prior) and \\( \alpha \\) is the concentration parameter controlling how many clusters we expect in the data. A Dirichlet process generates a discrete distribution, which can be used to model the clustering of p-values into groups that share common statistical properties (such as their distribution under the null or alternative hypothesis).
 
-Each p-value \( X_i \) is assigned to a cluster based on the mixture model:
+Each p-value \\( X_i \\) is assigned to a cluster based on the mixture model:
 
-\[
+$$
 X_i \sim \pi_0 \cdot U(0, 1) + \pi_1 \cdot Beta(a, b)
-\]
+$$
 
 Where:
-- \( \pi_0 \) is the proportion of true null hypotheses (those not rejected),
-- \( \pi_1 \) is the proportion of false null hypotheses (those that should be rejected),
-- \( Beta(a, b) \) is the Beta distribution modeling the p-values under the alternative hypothesis.
+- \\( \pi_0 \\) is the proportion of true null hypotheses (those not rejected),
+- \\( \pi_1 \\) is the proportion of false null hypotheses (those that should be rejected),
+- \\( Beta(a, b) \\) is the Beta distribution modeling the p-values under the alternative hypothesis.
 
 ### Dirichlet Process Clustering
 
 The Dirichlet process allows for a flexible clustering of p-values into different groups, where each group (or cluster) corresponds to a different distribution of p-values. New clusters can be created dynamically as more data are observed, allowing the model to adapt without needing to specify the number of components ahead of time.
 
-Each new p-value \( X_i \) is either assigned to an existing cluster or a new one with a probability proportional to the concentration parameter \( \alpha \). The larger \( \alpha \), the more likely it is that a new cluster will be created. This mechanism is known as the **Chinese Restaurant Process**, which is one way to sample from a Dirichlet process.
+Each new p-value \\( X_i \\) is either assigned to an existing cluster or a new one with a probability proportional to the concentration parameter \\( \alpha \\). The larger \\( \alpha \\), the more likely it is that a new cluster will be created. This mechanism is known as the **Chinese Restaurant Process**, which is one way to sample from a Dirichlet process.
 
-\[
+$$
 P(X_i \in \text{new cluster}) = \frac{\alpha}{\alpha + N}
-\]
-\[
+$$
+$$
 P(X_i \in \text{existing cluster}) = \frac{n_j}{\alpha + N}
-\]
+$$
 
-Where \( N \) is the total number of data points and \( n_j \) is the number of points in cluster \( j \).
+Where \\( N \\) is the total number of data points and \\( n_j \\) is the number of points in cluster \\( j \\).
 
 ### Posterior Sampling with DPMMs
 
-Posterior inference in DPMMs is typically performed using **Markov Chain Monte Carlo (MCMC)** methods. The two primary algorithms I implemented were the **No-Gaps Algorithm** and **Neal’s Algorithm 8**, which are Gibbs samplers tailored to Dirichlet processes. Both algorithms sample from the posterior distribution of the model parameters and the cluster assignments, allowing us to estimate the proportion of true null hypotheses (\( \pi_0 \)) and control the false discovery rate.
+Posterior inference in DPMMs is typically performed using **Markov Chain Monte Carlo (MCMC)** methods. The two primary algorithms I implemented were the **No-Gaps Algorithm** and **Neal’s Algorithm 8**, which are Gibbs samplers tailored to Dirichlet processes. Both algorithms sample from the posterior distribution of the model parameters and the cluster assignments, allowing us to estimate the proportion of true null hypotheses (\\( \pi_0 \\)) and control the false discovery rate.
 
 ### Updated No-Gaps Algorithm
 
@@ -78,39 +79,39 @@ The **No-Gaps Algorithm** is a Gibbs sampler-based algorithm that samples cluste
 
 
 1. **Initialization**:
-   - Let \( X = \{x_1, x_2, \dots, x_n\} \) be the set of p-values.
-   - Initialize the cluster assignments \( c_i = 0 \) for each \( x_i \), and let the cluster parameters \( \theta_k = (\alpha_k, \beta_k) \) be random values drawn from a prior distribution for Beta distributions.
+   - Let \\( X = \{x_1, x_2, \dots, x_n\} \\) be the set of p-values.
+   - Initialize the cluster assignments \\( c_i = 0 \\) for each \\( x_i \\), and let the cluster parameters \\( \theta_k = (\alpha_k, \beta_k) \\) be random values drawn from a prior distribution for Beta distributions.
 
 2. **For each iteration (Gibbs sampling)**:
-   For each data point \( x_i \):
-   - **Remove point \( x_i \) from its current cluster**:
-     - Let \( c_i \) be the current cluster for \( x_i \).
-     - Decrement the count of cluster \( c_i \) by 1:
-       \[
+   For each data point \\( x_i \\):
+   - **Remove point \\( x_i \\) from its current cluster**:
+     - Let \\( c_i \\) be the current cluster for \\( x_i \\).
+     - Decrement the count of cluster \\( c_i \\) by 1:
+       $$
        m_{c_i} \leftarrow m_{c_i} - 1
-       \]
-     - If \( m_{c_i} = 0 \), remove cluster \( c_i \) and adjust all subsequent cluster assignments to ensure no gaps in cluster indices:
-       \[
+       $$
+     - If \\( m_{c_i} = 0 \\), remove cluster \\( c_i \\) and adjust all subsequent cluster assignments to ensure no gaps in cluster indices:
+       $$
        c_j \leftarrow c_j - 1 \quad \text{for all} \quad c_j > c_i
-       \]
+       $$
    
-   - **Sample a new cluster for \( x_i \)**:
-     - For each cluster \( k \), compute the probability of assigning \( x_i \) to cluster \( k \) based on the Beta distribution parameters \( \theta_k = (\alpha_k, \beta_k) \):
-       \[
+   - **Sample a new cluster for \\( x_i \\)**:
+     - For each cluster \\( k \\), compute the probability of assigning \\( x_i \\) to cluster \\( k \\) based on the Beta distribution parameters \\( \theta_k = (\alpha_k, \beta_k) \\):
+       $$
        P(c_i = k | x_i, \theta_k) \propto m_k \cdot \text{Beta}(x_i | \alpha_k, \beta_k)
-       \]
-     - Add the probability of assigning \( x_i \) to a new cluster with parameter values drawn from the prior:
-       \[
+       $$
+     - Add the probability of assigning \\( x_i \\) to a new cluster with parameter values drawn from the prior:
+       $$
        P(c_i = \text{new}) \propto \alpha \cdot \text{Uniform}(x_i)
-       \]
-     - Normalize the probabilities and sample the new cluster assignment for \( x_i \).
+       $$
+     - Normalize the probabilities and sample the new cluster assignment for \\( x_i \\).
 
    - **Update cluster parameters**:
-     - For each cluster \( k \), update the parameters \( \alpha_k, \beta_k \) using Maximum Likelihood Estimation (MLE) based on the data points in cluster \( k \):
-       \[
+     - For each cluster \\( k \\), update the parameters \\( \alpha_k, \beta_k \\) using Maximum Likelihood Estimation (MLE) based on the data points in cluster \\( k \\):
+       $$
        \alpha_k = \mu_k \cdot 10, \quad \beta_k = (1 - \mu_k) \cdot 10
-       \]
-       where \( \mu_k \) is the mean of the data points assigned to cluster \( k \).
+       $$
+       where \\( \mu_k \\) is the mean of the data points assigned to cluster \\( k \\).
 
 And below is the Python implementation of the No-Gaps Algorithm for Dirichlet Process Mixture Models.
 
@@ -236,7 +237,7 @@ plt.ylabel("Density")
 plt.show()
 ```
 
-![Synthetic dataset](plots/output.png)
+![Synthetic dataset](../plots/output.png)
 
 ### Neal’s Algorithm 8
 
@@ -244,34 +245,34 @@ Neal's Algorithm 8 introduces auxiliary variables to facilitate more efficient m
 #### Algorithm
 
 1. **Initialization**:
-   - Initialize cluster assignments \( c_i = 0 \) for each \( x_i \), and let the cluster parameters \( \theta_k = (\alpha_k, \beta_k) \) be random values drawn from the prior.
+   - Initialize cluster assignments \\( c_i = 0 \\) for each \\( x_i \\), and let the cluster parameters \\( \theta_k = (\alpha_k, \beta_k) \\) be random values drawn from the prior.
 
 2. **For each iteration (Gibbs sampling with auxiliary parameters)**:
-   For each data point \( x_i \):
-   - **Remove point \( x_i \) from its current cluster**:
-     - Let \( c_i \) be the current cluster for \( x_i \).
-     - Decrement the count of cluster \( c_i \) by 1:
-       \[
+   For each data point \\( x_i \\):
+   - **Remove point \\( x_i \\) from its current cluster**:
+     - Let \\( c_i \\) be the current cluster for \\( x_i \\).
+     - Decrement the count of cluster \\( c_i \\) by 1:
+       $$
        m_{c_i} \leftarrow m_{c_i} - 1
-       \]
-     - If \( m_{c_i} = 0 \), remove cluster \( c_i \) and adjust all subsequent cluster assignments.
+       $$
+     - If \\( m_{c_i} = 0 \\), remove cluster \\( c_i \\) and adjust all subsequent cluster assignments.
 
-   - **Sample \( l \) auxiliary parameters**:
-     - Draw \( l \) auxiliary parameters \( \theta_{\text{aux}} = \{(\alpha_{\text{aux}}, \beta_{\text{aux}})\} \) from the prior distribution.
+   - **Sample \\( l \\) auxiliary parameters**:
+     - Draw \\( l \\) auxiliary parameters \\( \theta_{\text{aux}} = \{(\alpha_{\text{aux}}, \beta_{\text{aux}})\} \\) from the prior distribution.
 
-   - **Sample a new cluster for \( x_i \)**:
-     - For each existing cluster \( k \), compute the probability of assigning \( x_i \) to cluster \( k \):
-       \[
+   - **Sample a new cluster for \\( x_i \\)**:
+     - For each existing cluster \\( k \\), compute the probability of assigning \\( x_i \\) to cluster \\( k \\):
+       $$
        P(c_i = k | x_i, \theta_k) \propto m_k \cdot \text{Beta}(x_i | \alpha_k, \beta_k)
-       \]
-     - For each auxiliary parameter \( \theta_{\text{aux}} \), compute the probability of assigning \( x_i \) to a new cluster:
-       \[
+       $$
+     - For each auxiliary parameter \\( \theta_{\text{aux}} \\), compute the probability of assigning \\( x_i \\) to a new cluster:
+       $$
        P(c_i = \text{new aux}) \propto \frac{\alpha}{l} \cdot \text{Beta}(x_i | \alpha_{\text{aux}}, \beta_{\text{aux}})
-       \]
-     - Normalize the probabilities and sample the new cluster assignment for \( x_i \).
+       $$
+     - Normalize the probabilities and sample the new cluster assignment for \\( x_i \\).
 
    - **Update cluster parameters**:
-     - For each cluster \( k \), update the parameters \( \alpha_k, \beta_k \) using MLE based on the data points in cluster \( k \).
+     - For each cluster \\( k \\), update the parameters \\( \alpha_k, \beta_k \\) using MLE based on the data points in cluster \\( k \\).
 
 And the following is a python version implementation of this algorithm.
 
@@ -384,31 +385,31 @@ np.random.seed(42)
 data = np.concatenate([beta.rvs(0.1, 2, size=50), uniform.rvs(size=50)])
 ```
 
-![clusters_1](plots/clusters_pvalues.png)
+![clusters_1](../plots/clusters_pvalues.png)
 
 With each cluster coming from a beta distribution as follows:
 
-![clusters_2](plots/beta_clusters.png)
+![clusters_2](../plots/beta_clusters.png)
 
 
-### 1. Accuracy of Clustering and Estimation of \( \pi_1 \)
+### 1. Accuracy of Clustering and Estimation of \\( \pi_1 \\)
 
 #### Synthetic Data Experiments
 
 In order to assess how well DPMMs can model p-value distributions, I conducted experiments on synthetic datasets. The synthetic datasets consisted of p-values generated from both uniform distributions (representing true null hypotheses) and Beta distributions (representing false null hypotheses). By varying the parameters of the Beta distributions, I created different levels of difficulty in separating the clusters of p-values.
 
-For example, I simulated datasets with 30% false null hypotheses by drawing p-values from a \( Beta(0.1, 6.1) \) distribution and true nulls from a uniform \( U(0, 1) \) distribution. The goal was to see how well the DPMM algorithms could recover the true proportion of false null hypotheses (\( \pi_1 \)) and accurately model the underlying mixture of distributions.
+For example, I simulated datasets with 30% false null hypotheses by drawing p-values from a \\( Beta(0.1, 6.1) \\) distribution and true nulls from a uniform \\( U(0, 1) \\) distribution. The goal was to see how well the DPMM algorithms could recover the true proportion of false null hypotheses (\\( \pi_1 \\)) and accurately model the underlying mixture of distributions.
 
-The results showed that both algorithms successfully clustered the p-values into two distinct groups corresponding to the null and alternative hypotheses. The **No-Gaps Algorithm** performed well but had slightly more variance in estimating \( \pi_1 \), while **Neal’s Algorithm 8** consistently converged faster and produced tighter posterior estimates of \( \pi_1 \).
+The results showed that both algorithms successfully clustered the p-values into two distinct groups corresponding to the null and alternative hypotheses. The **No-Gaps Algorithm** performed well but had slightly more variance in estimating \\( \pi_1 \\), while **Neal’s Algorithm 8** consistently converged faster and produced tighter posterior estimates of \\( \pi_1 \\).
 
-##### Results: Posterior Distribution of \( \pi_1 \)
+##### Results: Posterior Distribution of \\( \pi_1 \\)
 
-| Algorithm            | True \( \pi_1 \) | Estimated \( \pi_1 \) | Variance |
+| Algorithm            | True \\( \pi_1 \\) | Estimated \\( \pi_1 \\) | Variance |
 |----------------------|------------------|-----------------------|----------|
 | No-Gaps Algorithm     | 0.30             | 0.28                  | 0.04     |
 | Neal’s Algorithm 8    | 0.30             | 0.29                  | 0.02     |
 
-As seen in the table, both algorithms provided accurate estimates of \( \pi_1 \), but Neal’s Algorithm 8 had a smaller variance, indicating more precise clustering and parameter estimation.
+As seen in the table, both algorithms provided accurate estimates of \\( \pi_1 \\), but Neal’s Algorithm 8 had a smaller variance, indicating more precise clustering and parameter estimation.
 
 #### Gene Expression Data
 
@@ -416,17 +417,17 @@ I also tested the algorithms on real-world data, specifically the leukemia gene 
 
 For this dataset, the true distribution of p-values is unknown, making it a more challenging and realistic application for DPMMs. The p-values under the null hypothesis are expected to follow a uniform distribution, while those under the alternative hypothesis may follow a more complex distribution, possibly resembling a Beta distribution due to the skewness often observed in alternative p-values.
 
-Both algorithms were able to estimate the proportion of true null hypotheses (\( \pi_0 \)) effectively. The **frequentist approach** (Storey's method) estimated \( \pi_0 \) at 0.488, while both Bayesian methods provided similar estimates, albeit slightly more conservative.
+Both algorithms were able to estimate the proportion of true null hypotheses (\\( \pi_0 \\)) effectively. The **frequentist approach** (Storey's method) estimated \\( \pi_0 \\) at 0.488, while both Bayesian methods provided similar estimates, albeit slightly more conservative.
 
 ##### Results for Gene Expression Data
 
-| Method               | Estimated \( \pi_0 \) | Estimated pFDR |
+| Method               | Estimated \\( \pi_0 \\) | Estimated pFDR |
 |----------------------|-----------------------|----------------|
 | Frequentist (Storey)  | 0.488                 | 0.087          |
 | No-Gaps Algorithm     | 0.384                 | 0.102          |
 | Neal’s Algorithm 8    | 0.379                 | 0.111          |
 
-The **No-Gaps Algorithm** and **Neal’s Algorithm 8** gave more conservative estimates of \( \pi_0 \), which likely reflects the added flexibility of the Bayesian approach. This conservatism can be useful in high-dimensional settings like gene expression data, where frequentist methods may underestimate the number of true null hypotheses, leading to inflated false discovery rates.
+The **No-Gaps Algorithm** and **Neal’s Algorithm 8** gave more conservative estimates of \\( \pi_0 \\), which likely reflects the added flexibility of the Bayesian approach. This conservatism can be useful in high-dimensional settings like gene expression data, where frequentist methods may underestimate the number of true null hypotheses, leading to inflated false discovery rates.
 
 ### 2. Convergence Speed and Computational Efficiency
 
