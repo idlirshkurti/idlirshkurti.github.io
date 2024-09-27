@@ -4,3 +4,7 @@ theme: just-the-docs
 
 url: https://idlirshkurti.github.io
 
+markdown: kramdown
+kramdown:
+  math_engine: mathjax
+  math_engine_kramdown: mathjax
