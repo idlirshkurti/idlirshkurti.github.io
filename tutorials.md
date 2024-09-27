@@ -1,6 +1,6 @@
 ---
 layout: page
-title: the-dev-hubs
+title: the-dev-hub
 has_children: true
 nav_order: 3
 description: Tutorials and guides
