@@ -5,7 +5,7 @@ layout: home
 
 ## Scribbles and nonsense
 
-Hi there! I'm Idlir, a data scientist with a passion for maths, data and football. This blog is my personal space where I make some (sometimes random) notes about data science, mathematics, Python, and some personal projects I might be working on.
+Hi there! I'm Idlir, a data scientist with a passion for maths, data and football. This blog is my personal space where I make some (mostly random) notes about data science, mathematics, Python, and some personal projects I might be working on.
 
 Here, you'll find:
 
