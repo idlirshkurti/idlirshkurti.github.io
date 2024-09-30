@@ -51,12 +51,32 @@ In this ABM setup, a few critical elements determined the dynamics of the system
 
 The final agent-based algorithm can be broken down into the following steps:
 
-1. **Initialize the Environment**: Create a spatial grid and place agents and resources within it.
-2. **Agent Initialization**: Define agent attributes such as position, resource capacity, and rules for interaction.
-3. **Decision Making**: At each timestep, agents gather information about their surroundings and make decisions based on the predefined rules (e.g., move toward a resource, avoid competition).
-4. **Movement and Interaction**: Agents move around the grid, interact with other agents and resources, and update their internal states.
-5. **Update Environment**: After each timestep, the environment updates based on the agents' actions.
-6. **Emergent Behavior**: Monitor emergent patterns such as cooperation, resource distribution, and agent clustering.
+1. Let \( i \) represent the \( i \)-th agent at time \( t \), with \( i = 1, 2, \dots, 1000 \) and \( t = 1, 2, \dots, 100 \). Randomly locate each agent at coordinates \( (x_i, y_i) \), where \( x_i \sim U(0, 1) \) and \( y_i \sim U(0, 1) \).
+
+2. Randomly locate 1000 objects \( k_1, k_2, \dots, k_{1000} \) at coordinates \( (x_k, y_k) \), where \( x_k \sim U(-10, 10) \) and \( y_k \sim U(-10, 10) \).
+
+3. At time \( t+1 \), each agent \( i \) moves a random distance in both \( x \) and \( y \) directions:
+   $$
+   x_{i,\text{new}} = x_{i,t} + d_{i,x}, \quad y_{i,\text{new}} = y_{i,t} + d_{i,y}
+   $$
+   where \( d_{i,x} \sim U(-1, 1) \) and \( d_{i,y} \sim U(-1, 1) \).
+
+4. Each agent \( i \) identifies the \( f \)-closest neighbors and adjusts its position by halving the average distance to them. The new coordinates at time \( t+1 \) are:
+   $$
+   x_{i,t+1} = 0.5(x_{i,\text{new}} + \bar{x}_{f}), \quad y_{i,t+1} = 0.5(y_{i,\text{new}} + \bar{y}_{f})
+   $$
+   where \( \bar{x}_f \) and \( \bar{y}_f \) are the average \( x \)- and \( y \)-coordinates of the \( f \)-closest neighbors of agent \( i \). Euclidean distance is used to determine these neighbors.
+
+5. Compute the Euclidean distance \( g(i,k) \) between each agent \( i \) and object \( k \):
+   $$
+   g(i + d, k) = \sqrt{(x_{i,\text{new}} - x_k)^2 + (y_{i,\text{new}} - y_k)^2}
+   $$
+   If \( g(i + d, k) < a \) (where \( a \) is a threshold), the wealth of agent \( i \) increases:
+   $$
+   w_{i,t+1} = w_{i,t} + 1
+   $$
+
+In this model, the parameters used are \( f = 5 \) (5 closest neighbors) and \( a = 0.01 \) (distance threshold).
 
 ### Python Code: Building the Model
 
