@@ -22,11 +22,11 @@ math: mathjax3
 
 Agent-based modeling (ABM) is a fascinating approach to understanding complex systems by simulating interactions among individual agents. Through my latest work, documented in [this report](https://github.com/idlirshkurti/Agent-Based-Modelling/blob/master/agent-based-modelling.pdf), I explored how agents, driven by simple rules, can collectively give rise to intricate, large-scale behaviors. Let me walk you through the key insights and methodologies of this project.
 
-#### What is Agent-Based Modeling?
+### What is Agent-Based Modeling?
 
 Agent-based modeling is a computational framework where individual entities, called agents, follow a set of predefined rules. These agents interact with each other and their environment, creating emergent behaviors that often can't be easily predicted from the rules governing individual agents. This type of modeling is especially useful in fields like economics, sociology, biology, and urban planning, where interactions between components are central to understanding the system as a whole.
 
-#### The ABM Approach in My Work
+### The ABM Approach in My Work
 
 The project I worked on focused on **simulating social dynamics** through agent-based modeling. Specifically, I aimed to replicate how simple decision-making processes at the individual level can aggregate to produce societal phenomena like cooperation, competition, or even conflict.
 
@@ -37,7 +37,7 @@ At the core of this project were **agents** representing individuals in a simula
 
 The agents in this model operated within a spatial environment, allowing for **local interactions** that are critical in understanding how global patterns emerge from local behaviors.
 
-#### Key Components of the Model
+### Key Components of the Model
 
 In this ABM setup, a few critical elements determined the dynamics of the system:
 
@@ -47,7 +47,7 @@ In this ABM setup, a few critical elements determined the dynamics of the system
 
 - **Emergent Properties**: One of the most exciting aspects of ABM is the emergent properties that arise from the individual interactions. In this project, certain unexpected patterns emerged, such as clusters of cooperation or resource competition "hotspots" that arose spontaneously, driven by the agents' individual decisions.
 
-#### The Algorithm
+### The Algorithm
 
 The final agent-based algorithm can be broken down into the following steps:
 
@@ -58,7 +58,7 @@ The final agent-based algorithm can be broken down into the following steps:
 5. **Update Environment**: After each timestep, the environment updates based on the agents' actions.
 6. **Emergent Behavior**: Monitor emergent patterns such as cooperation, resource distribution, and agent clustering.
 
-#### Python Code: Building the Model
+### Python Code: Building the Model
 
 Here's a Python implementation of this ABM using **Pydantic** for data validation, adhering to **Ruff** linting standards and **Mypy** type checks.
 
@@ -141,20 +141,20 @@ if __name__ == "__main__":
 ```
 
 
-#### Analyzing Results: Emergence of Complex Behavior
+### Analyzing Results: Emergence of Complex Behavior
 
 What makes agent-based modeling truly powerful is the ability to observe how individual actions can create complex societal patterns. For example, when agents were tasked with competing for limited resources, some groups developed cooperative strategies to outcompete others. This cooperation was not coded explicitly into the system but rather emerged organically from the rules governing each agent’s interactions.
 
 Another interesting observation came from introducing slight variations in agent decision-making. With just minor changes, the societal outcomes shifted dramatically, leading to divergent paths such as widespread cooperation or, alternatively, conflict and resource depletion.
 
-#### Applications of Agent-Based Models
+### Applications of Agent-Based Models
 
 This work demonstrates the potential of ABM for simulating real-world scenarios. By adjusting the rules and parameters, these models can be applied to various domains:
 - **Economics**: To simulate market dynamics, consumer behavior, or the spread of innovations.
 - **Social Sciences**: To study group behaviors, opinion formation, and the spread of ideas or trends.
 - **Epidemiology**: For modeling the spread of diseases and the impact of social behaviors on health outcomes.
 
-#### Future Directions
+### Future Directions
 
 Moving forward, I plan to refine this model by adding layers of complexity, such as multi-agent types, varying resource types, and more nuanced decision-making processes. Furthermore, incorporating **machine learning** techniques could allow agents to evolve and adapt their behaviors over time, bringing the simulation closer to real-world dynamics.
 
