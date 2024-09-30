@@ -5,6 +5,7 @@ parent: Agent Based Modelling
 description: Using a Reinforcement Learning approach
 nav_order: 1
 tags: [reinforcement-learning, python, AI]
+math: mathjax3
 ---
 
 # Exploring Reinforcement Learning in Agent-Based Modeling
