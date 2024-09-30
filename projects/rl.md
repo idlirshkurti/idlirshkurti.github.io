@@ -70,6 +70,7 @@ Our approach employs a Q-learning algorithm within an agent class, structured as
    Q(\mathbf{s}_i(t), a_i(t)) \leftarrow Q(\mathbf{s}_i(t), a_i(t)) + \alpha \left( r_i(t) + \gamma \max_a Q(\mathbf{s}_i(t + 1), a) - Q(\mathbf{s}_i(t), a_i(t)) \right)
    $$
 
+The following plots show the accumulated total wealth of the agents, the average rewards per iteration, and the paths of the agents at different time steps compared to the locations of the objects.
 
 ![Wealth accumulation](../plots/agent_wealth.png)
 
