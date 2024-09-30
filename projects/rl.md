@@ -81,3 +81,149 @@ The following plots show the accumulated total wealth of the agents, the average
 ## Conclusion
 
 This project utilizes reinforcement learning to empower agents in navigating a simulated urban environment. By understanding how agents allocate their locations based on access to essential resources, we can devise better strategies for urban planning and resource distribution. This study not only enhances the field of agent-based modeling but also informs future decisions in socio-economic policy-making and resource allocation. Through this approach, we aim to create a more equitable distribution of essential services and improve overall quality of life for urban residents.
+
+## Appendix
+
+```python
+import tqdm
+import numpy as np
+import random
+import matplotlib.pyplot as plt
+
+# Environment parameters
+NUM_AGENTS = 100
+NUM_OBJECTS = 10
+TIME_STEPS = 3000
+GRID_SIZE = 20.0  # Continuous grid size
+NUM_ACTIONS = 4  # Actions: left, right, up, down
+
+# Global variable to store objects
+global_objects = None
+
+# Initialize global variables for tracking performance metrics
+total_wealth_per_time_step = np.zeros(TIME_STEPS)
+average_rewards_per_time_step = np.zeros(TIME_STEPS)
+agent_positions_history = []  # Track agent positions over time
+
+# Agent class
+class Agent:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.q_table = np.zeros((int(GRID_SIZE * 10) + 1, int(GRID_SIZE * 10) + 1, NUM_ACTIONS))
+        self.learning_rate = 0.1
+        self.discount_factor = 0.95
+        self.exploration_rate = 1.0
+        self.exploration_decay = 0.99  # Slower decay to encourage exploration
+        self.total_wealth = 0
+
+    def choose_action(self):
+        if random.uniform(0, 1) < self.exploration_rate:
+            return random.randint(0, NUM_ACTIONS - 1)  # Explore
+        return np.argmax(self.q_table[int(self.x * 10), int(self.y * 10)])  # Exploit
+
+    def update_exploration_rate(self):
+        self.exploration_rate = max(0.1, self.exploration_rate * self.exploration_decay)
+
+    def update_q_value(self, action, reward, next_state):
+        best_future_q = np.max(self.q_table[int(next_state[0] * 10), int(next_state[1] * 10)])
+        current_q = self.q_table[int(self.x * 10), int(self.y * 10), action]
+        self.q_table[int(self.x * 10), int(self.y * 10), action] += self.learning_rate * (
+            reward + self.discount_factor * best_future_q - current_q)
+
+    def update_wealth(self, reward):
+        self.total_wealth += reward
+        return self.total_wealth
+
+    def move(self, action):
+        step_size = 0.1  # Continuous movement step size
+        near_objects = [obj for obj in global_objects if np.sqrt((self.x - obj[0])**2 + (self.y - obj[1])**2) < 1]
+
+        # If near an object, consider moving towards it
+        if near_objects:
+            # Move towards the closest object
+            closest_obj = min(near_objects, key=lambda obj: np.sqrt((self.x - obj[0])**2 + (self.y - obj[1])**2))
+            direction_x = closest_obj[0] - self.x
+            direction_y = closest_obj[1] - self.y
+            direction_length = np.sqrt(direction_x**2 + direction_y**2)
+            
+            if direction_length > 0:
+                self.x += (direction_x / direction_length) * step_size
+                self.y += (direction_y / direction_length) * step_size
+            return  # Exit after moving towards an object
+
+        # Regular movement if not near any objects
+        if action == 0:  # left
+            self.x = max(0, self.x - step_size)
+        elif action == 1:  # right
+            self.x = min(GRID_SIZE, self.x + step_size)
+        elif action == 2:  # down
+            self.y = max(0, self.y - step_size)
+        elif action == 3:  # up
+            self.y = min(GRID_SIZE, self.y + step_size)
+
+        # Add a penalty for moving towards the edges
+        if self.x <= 0 or self.x >= GRID_SIZE or self.y <= 0 or self.y >= GRID_SIZE:
+            self.update_wealth(-0.1)  # Small penalty for edge movement
+
+
+# Function to create objects
+def create_objects(num_objects):
+    return [(random.uniform(0, GRID_SIZE), random.uniform(0, GRID_SIZE)) for _ in range(num_objects)]
+
+# Function to calculate rewards with improved structure
+def calculate_reward(agent, objects):
+    reward = 0
+    exploration_bonus = 0.01  # Small reward for exploration
+    close_enough_reward_base = 5.0  # Base reward when within 5 units
+    reward_zone_radius = 3.0  # Define the radius of the reward zone
+
+    # Add exploration bonus
+    reward += exploration_bonus
+
+    for obj in objects:
+        distance = np.sqrt((agent.x - obj[0])**2 + (agent.y - obj[1])**2)
+        if distance <= 5:  # Within 5 units
+            # Calculate reward based on proximity
+            proximity_reward = close_enough_reward_base * (1 - (distance / 5))  # Increases as they get closer
+            reward += max(proximity_reward, 0)  # Ensure non-negative reward
+
+            # Reward zone bonus
+            if distance <= reward_zone_radius:  # Check if within reward zone
+                additional_reward = (reward_zone_radius - distance) * (close_enough_reward_base / reward_zone_radius)
+                reward += max(additional_reward, 0)  # Ensure non-negative reward
+
+    return reward
+
+# Update the run_simulation function to track performance metrics
+def run_simulation():
+    global global_objects  # Declare the global variable
+    agents = [Agent(random.uniform(0, GRID_SIZE), random.uniform(0, GRID_SIZE)) for _ in range(NUM_AGENTS)]
+    global_objects = create_objects(NUM_OBJECTS)  # Create objects and store them globally
+
+    for t in tqdm.tqdm(range(TIME_STEPS)):
+        total_rewards = 0
+        positions = [(agent.x, agent.y) for agent in agents]  # Capture agent positions
+
+        for agent_index, agent in enumerate(agents):
+            current_state = (agent.x, agent.y)
+            action = agent.choose_action()
+            agent.move(action)
+            next_state = (agent.x, agent.y)
+            reward = calculate_reward(agent, global_objects)
+
+            # Update wealth and total rewards
+            agent.update_wealth(reward)
+            total_rewards += reward
+
+            agent.update_q_value(action, reward, next_state)
+
+            # Update exploration rate
+            agent.update_exploration_rate()  # Update exploration rate here
+        
+        # Track performance metrics
+        total_wealth_per_time_step[t] = sum(agent.total_wealth for agent in agents)
+        average_rewards_per_time_step[t] = total_rewards / NUM_AGENTS
+        
+        agent_positions_history.append(positions)  # Store positions history
+```
