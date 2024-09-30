@@ -80,7 +80,7 @@ In this model, the parameters used are \\( f = 5 \\) (5 closest neighbors) and \
 
 ### Python Code: Building the Model
 
-Here's a Python implementation of this ABM using **Pydantic** for data validation, adhering to **Ruff** linting standards and **Mypy** type checks.
+Here's a Python implementation of this ABM:
 
 ```python
 from typing import List, Optional
