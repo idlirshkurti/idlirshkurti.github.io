@@ -72,7 +72,7 @@ Our approach employs a Q-learning algorithm within an agent class, structured as
 
 ![Wealth accumulation](../plots/agent_wealth.png)
 
-![Location of agents in different time steps](../plots/multiple_agent_location.png)
+![Location of agents in different time steps](../plots/multiple_agents_location.png)
 
 ![Single agent path](../plots/single_agent_location.png)
 
