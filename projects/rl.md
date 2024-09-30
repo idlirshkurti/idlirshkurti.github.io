@@ -36,18 +36,18 @@ The objective of this project is to develop a reinforcement learning framework t
 
 Our approach employs a Q-learning algorithm within an agent class, structured as follows:
 
-1. **State Representation**: Each agent \\( i \\) at time \\( t \\) is represented by its position in a continuous grid:
+  1. **State Representation**: Each agent \\( i \\) at time \\( t \\) is represented by its position in a continuous grid:
    $$
    \mathbf{s}_i(t) = (x_i(t), y_i(t))
    $$
 
-2. **Q-Table Initialization**: Each agent maintains a Q-table that encodes its knowledge of state-action values:
+  2. **Q-Table Initialization**: Each agent maintains a Q-table that encodes its knowledge of state-action values:
    $$
    Q: \mathbb{R}^{(G \times 10) \times (G \times 10) \times 4}
    $$
    where \\( 4 \\) corresponds to the available actions: left, right, up, and down.
 
-3. **Action Selection**: Agents select actions based on an exploration-exploitation strategy:
+  3. **Action Selection**: Agents select actions based on an exploration-exploitation strategy:
    $$
    a_i(t) = 
    \begin{cases} 
@@ -56,16 +56,16 @@ Our approach employs a Q-learning algorithm within an agent class, structured as
    \end{cases}
    $$
 
-4. **Movement Mechanics**: Agents are encouraged to move towards the nearest resource while also avoiding edges of the grid.
+  4. **Movement Mechanics**: Agents are encouraged to move towards the nearest resource while also avoiding edges of the grid.
 
-5. **Reward Calculation**: The reward function includes:
+  5. **Reward Calculation**: The reward function includes:
    - **Exploration Bonus**: Encouraging agents to explore their environment.
    - **Proximity Reward**: Higher rewards for being closer to essential resources.
    $$
    r_i(t) = r_{exploration} + \sum_{j=1}^{M} R_{proximity}(d_{ij}) + R_{zone}(d_{ij})
    $$
 
-6. **Q-value Update**: The Q-value for each action is updated based on the rewards received:
+  6. **Q-value Update**: The Q-value for each action is updated based on the rewards received:
    $$
    Q(\mathbf{s}_i(t), a_i(t)) \leftarrow Q(\mathbf{s}_i(t), a_i(t)) + \alpha \left( r_i(t) + \gamma \max_a Q(\mathbf{s}_i(t + 1), a) - Q(\mathbf{s}_i(t), a_i(t)) \right)
    $$
