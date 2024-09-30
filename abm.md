@@ -180,6 +180,19 @@ Moving forward, I plan to refine this model by adding layers of complexity, such
 
 ### Final Thoughts
 
-Agent-based modeling offers a powerful lens through which to study complex systems, from economic markets to social interactions and beyond. Through the simulation of simple agent behaviors, we can gain insights into the underlying dynamics that drive large-scale phenomena. I’m excited about the future possibilities of this work and how it could further our understanding of complex, decentralized systems.
+Agent-based modeling (ABM) offers a dynamic way to simulate complex systems using individual agents that interact based on defined rules. In a recent study, 1000 agents were placed in a bounded space with 1000 randomly positioned objects, and their behaviors were observed over 100 time steps. The findings reveal fascinating patterns in how individual movements, neighbor interactions, and resource accumulation lead to emergent behavior.
+
+The agents moved randomly, adjusted their positions based on the proximity of their neighbors, and accumulated wealth when they came close to objects. This wealth represents a form of success in interacting with the environment. The key discoveries include:
+
+1. **Emergent Behavior**: Even simple rules, such as agents moving based on neighbor proximity, led to complex patterns like clustering and wealth disparities over time. The simulation showed how agents gradually spread out, forming groups while competing for resources.
+  
+2. **Importance of Neighbor Influence**: By halving the distance to their nearest neighbors, agents tended to move towards a more central position relative to their local group. This process allowed agents to maintain group cohesion, but also revealed limitations in exploring the full space.
+
+3. **Randomness and Wealth Accumulation**: Random movement combined with the proximity-based wealth rule demonstrated that wealth distribution became uneven. Some agents consistently moved closer to objects, accumulating wealth, while others lagged behind.
+
+4. **Parameter Sensitivity**: The model's performance was sensitive to parameters like the number of neighbors considered (set to 5) and the proximity threshold for wealth accumulation (set to 0.01). These choices impacted how agents spread out and how resources were gathered, offering insights into how tweaking these values could simulate different real-world scenarios.
+
+In summary, this agent-based model shows the power of local interactions in generating complex, emergent behavior. The model suggests that agents acting on basic movement rules can mimic behaviors seen in natural systems, such as resource competition and group formation, and offers a tool for studying dynamics in various fields like economics, ecology, and social sciences.
+
 
 For those interested in diving deeper into the technical details, feel free to check out my full report [here](https://github.com/idlirshkurti/Agent-Based-Modelling/blob/master/agent-based-modelling.pdf).
