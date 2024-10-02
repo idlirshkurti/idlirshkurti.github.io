@@ -226,4 +226,83 @@ def run_simulation():
         average_rewards_per_time_step[t] = total_rewards / NUM_AGENTS
         
         agent_positions_history.append(positions)  # Store positions history
+
+# ===================== Plotting ===================== #
+
+def plot_results():
+    plt.figure(figsize=(12, 6))
+
+    # Plot total wealth accumulation
+    plt.subplot(1, 2, 1)
+    plt.plot(total_wealth_per_time_step, label='Total Wealth')
+    plt.title('Total Wealth Accumulation Over Time')
+    plt.xlabel('Time Steps')
+    plt.ylabel('Total Wealth')
+    plt.legend()
+
+    # Plot average rewards
+    plt.subplot(1, 2, 2)
+    plt.plot(average_rewards_per_time_step, label='Average Reward', color='orange')
+    plt.title('Average Reward Per Agent Over Time')
+    plt.xlabel('Time Steps')
+    plt.ylabel('Average Reward')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+def plot_agent_locations(time_steps):
+    fig, axs = plt.subplots(2, 2, figsize=(12, 12))
+    fig.suptitle('Agent Locations at Various Time Steps', fontsize=16)
+
+    for idx, time_step in enumerate(time_steps):
+        agents_positions = np.array(agent_positions_history)[time_step]
+        axs[idx // 2, idx % 2].scatter(agents_positions[:, 0], agents_positions[:, 1], color='blue', label='Agents', marker='x', s=50)  # Change to X marker
+        axs[idx // 2, idx % 2].scatter(*zip(*global_objects), color='red', alpha=0.5, label='Objects', s=50)
+        axs[idx // 2, idx % 2].set_xlim(-1, GRID_SIZE + 1)
+        axs[idx // 2, idx % 2].set_ylim(-1, GRID_SIZE + 1)
+        axs[idx // 2, idx % 2].set_title(f'Time Step {time_step}')
+        axs[idx // 2, idx % 2].set_xlabel('X Position')
+        axs[idx // 2, idx % 2].set_ylabel('Y Position')
+        axs[idx // 2, idx % 2].legend()
+        axs[idx // 2, idx % 2].grid()
+
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+    plt.show()
+
+def plot_multiple_agents_movements(agent_indices):
+    num_agents = len(agent_indices)
+    num_steps = len(agent_positions_history)
+
+    plt.figure(figsize=(12, 12))
+    object_positions = np.array(global_objects)
+
+    for idx, agent_index in enumerate(agent_indices):
+        agent_movements = np.array(agent_positions_history)[:, agent_index]  # Get positions for the specific agent
+
+        # Create a color gradient from white to black
+        colors = plt.cm.plasma(np.linspace(0, 1, num_steps))
+
+        # Create subplot for each agent
+        plt.subplot(2, 2, idx + 1)
+
+        # Plot the agent's movement
+        for i in range(num_steps - 1):
+            plt.plot(agent_movements[i:i + 2, 0], agent_movements[i:i + 2, 1], color=colors[i], marker='o', markersize=3)
+
+        # Plot the objects
+        plt.scatter(object_positions[:, 0], object_positions[:, 1], color='red', label='Objects', marker='x', s=100)
+
+        plt.title(f'Movement of Agent {agent_index}')
+        plt.xlim(-1, GRID_SIZE + 1)
+        plt.ylim(-1, GRID_SIZE + 1)
+        plt.xlabel('X Position')
+        plt.ylabel('Y Position')
+        plt.axhline(0, color='black', lw=0.5)
+        plt.axvline(0, color='black', lw=0.5)
+        plt.grid()
+        plt.legend()
+
+    plt.tight_layout()  # Adjusts subplot parameters to give specified padding
+    plt.show()
 ```
