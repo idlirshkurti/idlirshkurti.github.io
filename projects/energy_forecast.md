@@ -39,29 +39,100 @@ Our solution integrates three main components:
 
 ---
 
-### 1. Using LSTM for Time Series Forecasting
+### 1. How Conformal Predictions Work
 
-LSTM (Long Short-Term Memory) networks are a type of recurrent neural network (RNN) especially good at capturing long-term dependencies in sequential data. In this project, we trained an LSTM model on recent solar energy production data, using a sequence of the past 72 hours to predict the next 24 hours. 
+Conformal prediction is a method used to create prediction intervals that are statistically valid, even for complex machine learning models. Unlike traditional methods that often assume a specific distribution of residuals, conformal prediction is **distribution-free** and based on a calibration process that provides uncertainty intervals.
 
-Here's a breakdown of the model design:
-- **Input Layer**: Receives the past 72 hours of solar production data.
-- **LSTM Layers**: Capture sequential dependencies in the data, allowing the model to learn from patterns like daily production cycles.
-- **Dense Output Layer**: Outputs a vector of 24 values, representing production estimates for the next 24 hours.
+#### Steps in Conformal Prediction
 
-This model was trained offline using historical data from Energinet, a Danish energy provider, and saved as a `.keras` model file, which we load into our app.
+1. **Calibration with Residuals**: 
+   Let’s assume we have a trained model, \\( f \\), that predicts energy production based on recent data. We take a **calibration set** of historical data, which wasn’t used during training, and calculate residuals between predictions and actual values:
+   
+   $$
+   \text{residual}_i = |y_i - f(x_i)|
+   $$
+   
+   where \\( y_i \\) is the actual production and \\( f(x_i) \\) is the model’s forecast at time \\( i \\). These residuals give us a measure of how much error we typically see in predictions.
+
+2. **Quantile Calculation for Prediction Interval**: 
+   To form a prediction interval at a given confidence level \\( 1 - \alpha \\), we calculate quantiles of the residuals. For example, if we want a 95% confidence interval, we use the 97.5th quantile for the upper bound:
+   
+   $$
+   q_{\text{upper}} = \text{Quantile}(\{\text{residual}_i\}, 1 - \alpha / 2)
+   $$
+   
+   This quantile \\( q_{\text{upper}} \\) tells us the error threshold such that 95% of future residuals are expected to fall below this threshold.
+
+3. **Applying Prediction Intervals**:
+   For each new forecasted value \\( \hat{y}_{t+1} = f(x_{t+1}) \\), we construct the prediction interval as:
+   
+   $$
+   \left[ \hat{y}_{t+1} - q_{\text{upper}}, \hat{y}_{t+1} + q_{\text{upper}} \right]
+   $$
+   
+   In practice, if the forecasted value minus the error quantile is negative (which could happen with production data that can’t be negative), we clip it to zero.
+
+#### Why Conformal Prediction Works
+Conformal prediction intervals are **guaranteed to cover the true value \\( y_{t+1} \\)** with probability \\( 1 - \alpha \\) under mild assumptions, thanks to its use of historical residuals rather than parametric assumptions. This method is particularly valuable in non-linear models like LSTMs, where residuals may not follow a normal distribution.
 
 ---
 
-### 2. Adding Uncertainty with Conformal Prediction Intervals
+### 2. How LSTM Models Work for Time Series Forecasting
 
-Predictions are useful, but they’re even more valuable with quantified uncertainty. Conformal prediction is a technique that allows us to compute valid prediction intervals, even for complex models like neural networks. It doesn’t require any distributional assumptions, making it flexible and reliable.
+**Long Short-Term Memory (LSTM)** networks are a type of Recurrent Neural Network (RNN) designed to capture long-term dependencies in sequential data. Traditional RNNs struggle with long sequences due to issues like vanishing gradients, but LSTMs overcome this by using a complex architecture with **gates** that control information flow.
 
-#### How Conformal Prediction Works
-1. **Calibration Set**: We use recent historical data that wasn’t used in training as a “calibration set.”
-2. **Residual Calculation**: For each point in the calibration set, we make a forecast and calculate the residual (i.e., the difference between the forecasted and actual production values).
-3. **Quantile Residuals**: Based on these residuals, we calculate quantiles (for example, the 95% quantile) to define the upper and lower bounds of our prediction interval.
+#### LSTM Architecture
 
-In practice, this means that for each forecasted value, we add an upper and lower bound based on the residual quantiles, providing a range within which future production is likely to fall, given a specified confidence level.
+An LSTM cell consists of:
+1. **Cell State (\\( c_t \\))**: The memory of the cell, which carries information across time steps.
+2. **Hidden State (\\( h_t \\))**: The output of the cell at each time step, which serves as input to the next cell in the sequence.
+
+The flow of data in an LSTM cell is controlled by three types of gates:
+
+1. **Forget Gate** (\\( f_t \\)):
+   Controls how much of the previous cell state (\\( c_{t-1} \\)) should be retained:
+   $$
+   f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)
+   $$
+   where \\( \sigma \\) is the sigmoid function, \\( W_f \\) are weights, and \\( x_t \\) is the input at time \\( t \\).
+
+2. **Input Gate** (\\( i_t \\)) and Candidate Cell State (\\( \tilde{c}_t \\)):
+   Determines how much new information should be added to the cell state:
+   $$
+   i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)
+   $$
+   $$
+   \tilde{c}_t = \tanh(W_c \cdot [h_{t-1}, x_t] + b_c)
+   $$
+   
+   Here, \\( i_t \\) decides the amount of information to add, and \\( \tilde{c}_t \\) is the new candidate value.
+
+3. **Update Cell State** (\\( c_t \\)):
+   Combines the forget and input gates to update the cell state:
+   $$
+   c_t = f_t \cdot c_{t-1} + i_t \cdot \tilde{c}_t
+   $$
+
+4. **Output Gate** (\\( o_t \\)):
+   Controls what part of the cell state to output as the hidden state:
+   $$
+   o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)
+   $$
+   $$
+   h_t = o_t \cdot \tanh(c_t)
+   $$
+
+#### Using LSTM for Forecasting
+
+In time series forecasting, an LSTM model is trained on sequences of past data (e.g., the last 72 hours) to predict future values (e.g., the next 24 hours). The LSTM effectively learns temporal patterns in the data, such as daily production cycles, allowing it to generalize these patterns for future forecasts.
+
+Given a trained LSTM model \\( f \\), we can use it to forecast:
+$$
+\hat{y}_{t+1}, \hat{y}_{t+2}, \ldots, \hat{y}_{t+24} = f(x_t)
+$$
+where \\( x_t \\) represents the sequence of inputs (historical production values) up to time \\( t \\).
+
+The LSTM’s ability to retain information over long sequences makes it well-suited for energy production forecasting, where past data contains important cyclical patterns driven by time of day, weather, and other factors.
 
 ---
 
@@ -109,17 +180,17 @@ if st.button("Generate Forecast"):
 
 ---
 
-### Results and Insights
+### 4. Results and Insights
 Our app provides an intuitive interface for exploring 24-hour energy production forecasts with confidence intervals. Users can adjust the confidence level to see how the prediction interval widens or narrows, directly illustrating the trade-off between certainty and interval width. This is especially useful for energy managers who need reliable production forecasts to plan resources and maintain grid stability.
 
-### Key Takeaways
+### 5. Key Takeaways
 1. **LSTM Models for Time Series**: LSTMs are effective at capturing patterns in sequential data, making them ideal for time series forecasting tasks like energy production.
 2. **Conformal Prediction for Uncertainty Quantification**: Conformal prediction intervals are a practical way to add uncertainty to forecasts, providing an interpretable range around each prediction.
 3. **Streamlit for Data Apps**: Streamlit’s ease of use and flexibility make it an excellent choice for quickly deploying interactive data applications.
 
 ---
 
-### Future Directions
+### 6. Future Directions
 We plan to extend this dashboard with:
 - **Additional Forecast Horizons**: Allowing users to select different forecast horizons (e.g., 6, 12, 48 hours).
 - **Incorporating Weather Data**: Adding weather forecasts to the model input to improve prediction accuracy.
