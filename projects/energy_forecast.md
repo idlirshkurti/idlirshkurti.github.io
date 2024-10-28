@@ -67,7 +67,7 @@ In practice, this means that for each forecasted value, we add an upper and lowe
 
 ### 3. Visualizing Forecasts with Streamlit
 
-![Energy forecast dashboard](../plots/energy_forecast.png)
+![Energy forecast dashboard](../plots/energy_streamlit.png)
 
 With the forecasting model and uncertainty intervals in place, we needed an interactive way to display results. **Streamlit** was the perfect choice: it’s a Python framework designed for building data apps quickly and intuitively. Here’s how we structured our Streamlit app:
 
