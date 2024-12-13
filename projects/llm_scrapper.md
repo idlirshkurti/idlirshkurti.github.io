@@ -1,10 +1,10 @@
 ---
 layout: page
-title: LLM Web Scrapper
+title: LLM Web Scraper
 parent: LLMs
 description: Using LLMs to scrape useful information from web pages
 nav_order: 1
-tags: [llm, huggingface, web-scrapping, python]
+tags: [llm, huggingface, web-scraping, python]
 ---
 
 # Using Large Language Models (LLMs) for Detecting Values from Web-Scraped HTML Using Hugging Face
