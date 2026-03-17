@@ -139,22 +139,3 @@ async def get_db():
 ```
 
 This sustains high concurrency without exhaustion.
-
-## Combined Impact
-
-| Technique          | Latency Reduction | Use Case Fit                  |
-|--------------------|-------------------|-------------------------------|
-| Pagination        | 50-90%           | List endpoints                |
-| Async Logging     | 20-50%           | I/O-heavy services            |
-| Redis Caching     | 80-99% (hits)    | Read-heavy data               |
-| Connection Pool   | 10-30%           | DB-intensive APIs             |
-
-Integrate via FastAPI dependencies for production ML/agent APIs.
-
----
-
-### References
-- [Battle-tested strategies to supercharge API performance](https://dev.to/dehemi_fabio/5-battle-tested-strategies-to-supercharge-your-api-performance-22ah)
-- [FastAPI Pagination Documentation](https://uriyyo-fastapi-pagination.netlify.app)
-- [FastAPI Redis Cache GitHub](https://github.com/seapagan/fastapi-redis-cache-reborn)
-- [Database Pooling in FastAPI](https://asifmuhammad.com/articles/database-pooling-fastapi)
