@@ -17,6 +17,7 @@ This is where I keep my notes, tutorials, and experiments as I continue to learn
 * **Unit Testing:** How to write effective unit tests to ensure code quality and reliability.
 * **API Chronicles:** Building and interacting with APIs using Python.
 * **Actor-Based Models:** Exploring the principles of actor-based concurrency for building scalable event-driven applications.
+* **AI Agents:** Exploring the landscape of autonomous LLM-powered entities and the protocols that connect them.
 * **Automating My Workflow:**  Using tools like Makefiles, Justfiles, and Nox to streamline development workflows.
 
 This is a living document, constantly evolving as I learn and discover new things.
