@@ -5,6 +5,7 @@ parent: AI Agents
 description: A deep-dive review of Anthropic's guide to evaluating AI agents
 nav_order: 2
 tags: [ai, agents, evals, anthropic, benchmarks]
+math: mathjax3
 ---
 
 # Deep Dive: Thoughts on Anthropic's "Demystifying Agent Evals"
@@ -28,11 +29,11 @@ The post starts with a fundamental truth that I’ve felt in my own experiments:
 
 In a standard LLM call, you send a prompt and get a response. If the response is bad, you fix the prompt. But an agent operates in a loop (the "Agent Loop"). It reasons, calls a tool, gets an observation, and repeats. 
 
-Anthropic calls this **multi-turn propagation**. Mathematically, if an agent must complete $n$ sequential steps to succeed, and each step $i$ has an independent probability of success $p_i$, the total probability of success $P(S)$ is:
+Anthropic calls this **multi-turn propagation**. Mathematically, if an agent must complete \\( n \\) sequential steps to succeed, and each step \\( i \\) has an independent probability of success \\( p_i \\), the total probability of success \\( P(S) \\) is:
 
 $$P(S) = \prod_{i=1}^{n} p_i$$
 
-Even if your model is "95% reliable" ($p_i = 0.95$) at every step, a 10-step trajectory only has a **59.8%** chance of success. This is why "vibes-based testing" fails; human intuition is notoriously bad at estimating the exponential decay of products.
+Even if your model is "95% reliable" (\\( p_i = 0.95 \\)) at every step, a 10-step trajectory only has a **59.8%** chance of success. This is why "vibes-based testing" fails; human intuition is notoriously bad at estimating the exponential decay of products.
 
 ### The "Loophole" Problem: When Agents Outsmart the Test
 
@@ -44,34 +45,34 @@ It "passed" the success criteria (the flight is "booked" in the database), but i
 
 ### A New Framework: pass@k vs. pass^k
 
-This was the most technical part of the post, and it's something I’m going to start using in my own projects. Since agents are stochastic (non-deterministic), running an eval once gives you zero statistically significant information. You have to run it many times ($k$ times).
+This was the most technical part of the post, and it's something I’m going to start using in my own projects. Since agents are stochastic (non-deterministic), running an eval once gives you zero statistically significant information. You have to run it many times (\\( k \\) times).
 
-Let $p$ be the probability that the agent succeeds on a single trial ($k=1$). We can define two diverging metrics:
+Let \\( p \\) be the probability that the agent succeeds on a single trial (\\( k=1 \\)). We can define two diverging metrics:
 
 #### 1. pass@k (The "Best Case" Metric)
-This is the probability that the agent succeeds **at least once** in $k$ independent attempts. It represents the cumulative distribution of a geometric distribution's first success.
+This is the probability that the agent succeeds **at least once** in \\( k \\) independent attempts. It represents the cumulative distribution of a geometric distribution's first success.
 
 $$pass@k = 1 - (1 - p)^k$$
 
 *   **Intuition:** "Can the agent solve this if it gets lucky?"
-*   **Asymptotic Behavior:** $\lim_{k \to \infty} (1 - (1 - p)^k) = 1$. As you increase $k$, the score always rises toward 100%.
-*   **Use Case:** Coding assistants where a human picks the best of $k$ options.
+*   **Asymptotic Behavior:** \\( \lim_{k \to \infty} (1 - (1 - p)^k) = 1 \\). As you increase \\( k \\), the score always rises toward 100%.
+*   **Use Case:** Coding assistants where a human picks the best of \\( k \\) options.
 
 #### 2. pass^k (The "Reliability" Metric)
-This is the probability that the agent succeeds **every single time** across $k$ independent attempts. 
+This is the probability that the agent succeeds **every single time** across \\( k \\) independent attempts. 
 
 $$pass^k = p^k$$
 
 *   **Intuition:** "Is this agent reliable enough to be left alone?"
-*   **Asymptotic Behavior:** $\lim_{k \to \infty} p^k = 0$ (for $p < 1$). The more trials you run, the more likely a single failure becomes.
+*   **Asymptotic Behavior:** \\( \lim_{k \to \infty} p^k = 0 \\) (for \\( p < 1 \\)). The more trials you run, the more likely a single failure becomes.
 *   **Use Case:** Fully autonomous agents (e.g., customer support).
 
 ### Why the Gap Matters
 
-Consider an agent with a baseline success rate $p = 0.8$ (80%). Let's look at the results for $k = 5$:
+Consider an agent with a baseline success rate \\( p = 0.8 \\) (80%). Let's look at the results for \\( k = 5 \\):
 
-*   **pass@5:** $1 - (0.2)^5 = 0.99968$ (**99.9%**)
-*   **pass^5:** $(0.8)^5 = 0.32768$ (**32.8%**)
+*   **pass@5:** \\( 1 - (0.2)^5 = 0.99968 \\) (**99.9%**)
+*   **pass^5:** \\( (0.8)^5 = 0.32768 \\) (**32.8%**)
 
 The **Capability Gap** here is massive (67.1%). If you only measure `pass@k`, you might think your agent is production-ready. But in reality, it can only guarantee a consistent "perfect run" about a third of the time. Anthropic’s point is that for a "production-ready" agent, you should be optimizing for a high **pass^k**.
 
