@@ -22,6 +22,12 @@ The biggest bottleneck in building useful AI agents isn't just the model—it's 
 
 This is the "Connector Problem," and the **Model Context Protocol (MCP)** by Anthropic aims to solve it.
 
+![The M×N Integration Problem](../plots/mcp_mn_problem.png)
+*Figure 1: The complex "spaghetti" of custom integrations (M applications × N tools).*
+
+![The M+N Solution](../plots/mcp_mn_solution.png)
+*Figure 2: MCP standardizes the interface, reducing complexity to M+N.*
+
 ### What is MCP?
 
 MCP is an open standard that decouples where your data lives from how the model accesses it. Instead of building a custom "Slack-to-Claude" or "GitHub-to-GPT-4" bridge, you build an **MCP Server**. Any **MCP Client** (like Claude Desktop or a custom-built agent) can then connect to that server and use the tools and data it exposes.
@@ -31,6 +37,9 @@ It’s essentially HTTP for LLM context.
 ### The Architecture: Clients and Servers
 
 The protocol follows a simple client-server model:
+
+![MCP Architecture: Host, Client, and Server](../plots/mcp_architecture.png)
+*Figure 3: The architectural relationship between the Host, Client, and Server.*
 
 1. **MCP Server**: A small service that exposes specific capabilities (e.g., "search my local files" or "query Jira").
 2. **MCP Client**: The environment where the LLM lives (e.g., your IDE, a CLI tool, or a web app).
