@@ -102,9 +102,3 @@ To build a truly safe agent, you stack the layers:
 Reading this made me realize that my own "evals" were way too simplistic. I was looking for a single number to tell me if my agent was "good." In reality, "good" is a spectrum between **capability** (what can it do when it tries its best?) and **reliability** (what will it do every single time?).
 
 If you're building in the agent space, do yourself a favor and read the full article. It moves the needle from "AI magic" to "software engineering."
-
----
-
-### References
-- [Demystifying evals for AI agents - Anthropic Engineering](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents)
-- [Hugging Face MCP Course (for context on Agent protocols)](./mcp_introduction.md)
