@@ -1,12 +1,22 @@
 ---
-layout: post
-title: "Concurrency vs Parallelism: What's the Difference?"
-date: 2026-05-12
-categories: [concurrency, actors, python]
+layout: page
+title: Concurrency vs Parallelism
+parent: Actors
+description: Understanding the difference between concurrency and parallelism in Python, with code examples
+nav_order: 5
 tags: [python, concurrency, parallelism, asyncio, multiprocessing, threading]
 ---
 
 # Concurrency vs Parallelism: What's the Difference?
+{:.no_toc}
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 These two terms are often used interchangeably, but they describe fundamentally different things. Confusing them leads to picking the wrong tool for the job — and performance bugs that are hard to diagnose.
 
