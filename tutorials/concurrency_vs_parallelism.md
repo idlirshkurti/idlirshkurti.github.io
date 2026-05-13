@@ -30,6 +30,47 @@ These two terms are often used interchangeably, but they describe fundamentally 
 
 A useful analogy: a single barista handling three coffee orders by alternating between them is **concurrent**. Three baristas each making one order simultaneously is **parallel**.
 
+The timeline diagram below makes this concrete — notice how concurrent tasks interleave on a single timeline, while parallel tasks run side by side simultaneously:
+
+![Concurrency vs Parallelism Timeline](https://pplx-res.cloudinary.com/image/upload/pplx_search_images/d927d5b960eeb5ca39142e00aea1ff4d36073d19.jpg)
+
+---
+
+## The Python GIL: History and Removal
+
+To understand Python's concurrency model, you need to understand the **Global Interpreter Lock (GIL)** — one of the most discussed and debated features in the language's history.
+
+### What Was the GIL?
+
+The GIL is a mutex (a mutual exclusion lock) that protects access to Python objects, preventing multiple threads from executing Python bytecode simultaneously. It was introduced in CPython (the reference Python implementation) in the early 1990s as a pragmatic solution to a hard problem: making memory management thread-safe without the complexity of fine-grained locking on every individual object.
+
+In practice, the GIL meant:
+
+- Only **one thread** could hold the interpreter lock and run Python code at any given moment.
+- Threads would take turns — the GIL would be released periodically (or when waiting on I/O) to let another thread run.
+- For **I/O-bound** tasks, this was largely fine: threads spent most of their time waiting, not executing bytecode.
+- For **CPU-bound** tasks, this was a serious limitation: multiple threads on a multi-core machine would *not* run in parallel. You'd get concurrency (interleaving), but not parallelism (simultaneous execution).
+
+The diagram below illustrates this clearly — with the GIL, threads compete for a single lock and cannot truly run in parallel on multiple cores:
+
+![Python GIL vs Free-threaded Python](https://pplx-res.cloudinary.com/image/upload/pplx_search_images/8a54a59aa2cea38e6d935ffe3cda69200f2889c0.jpg)
+
+### Why Was It Hard to Remove?
+
+Removing the GIL was discussed for decades but resisted because:
+
+- CPython's memory management (reference counting) relied on the GIL for thread safety. Without it, every reference count increment/decrement would need its own lock — a major performance regression for single-threaded code.
+- Many C extensions were written assuming the GIL existed, making removal a breaking change for the ecosystem.
+- Attempts like Jython and PyPy showed that removing the GIL was possible but came with trade-offs.
+
+### Python 3.13+ and the Free-Threaded Build
+
+Starting with **Python 3.13** (released October 2024), CPython ships an **experimental free-threaded build** (also called "no-GIL" mode), enabled via a compile flag. Python 3.14 continues this work, making the free-threaded build more stable and performant.
+
+In free-threaded Python, threads can truly run in parallel on multiple cores for CPU-bound work — without needing `multiprocessing`. This is a fundamental shift in the language's concurrency model, though the standard GIL-enabled build remains the default for now while the ecosystem adapts.
+
+For most production code today, the guidance in this post still applies: use `multiprocessing` for CPU-bound parallelism. But watch this space — free-threaded Python is rapidly maturing.
+
 ---
 
 ## Why Python Makes This Interesting
